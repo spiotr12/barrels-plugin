@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.starzec.piotr</id>
     <name>Barrels</name>
-    <version>1.0</version>
+    <version>1.1</version>
     <vendor email="starzec.piotr.12@gmail.com">Starzec Piotr</vendor>
 
     <description>Plugin that adds index files for JavaScript and TypeScript</description>
@@ -32,7 +32,7 @@
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="FileTemplateSeparatorGroup"/>
 
             <action id="com.starzec.piotr.CreateTypeScriptBarrelAction" class="com.starzec.piotr.CreateTypeScriptBarrelAction"
-                    text="TypeScript Barrel" description="Create index.ts fle" icon="JavaScriptPsiIcons.Icons.FileTypes.TypeScriptFile">
+                    text="TypeScript Barrel" description="Create index.ts fle" icon="JavaScriptPsiIcons.FileTypes.TypeScriptFile">
             </action>
 
             <action id="com.starzec.piotr.CreateJavaScriptBarrelAction" class="com.starzec.piotr.CreateJavaScriptBarrelAction"
@@ -40,7 +40,7 @@
             </action>
 
             <action id="com.starzec.piotr.CreateScssBarrelAction" class="com.starzec.piotr.CreateScssBarrelAction"
-                    text="SCSS Barrel" description="Create _index.scss fle" icon="SassIcons.Org.Jetbrains.Plugins.Sass.Sass">
+                    text="SCSS Barrel" description="Create _index.scss fle" icon="SassIcons.Sass">
             </action>
         </group>
     </actions>

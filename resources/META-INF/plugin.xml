@@ -18,6 +18,8 @@
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.sass</depends>
+    <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
@@ -25,20 +27,20 @@
 
     <actions>
         <!-- Add your actions here -->
-        <group id="com.starzec.piotr.CreateBarrelGroup" class="com.starzec.piotr.CreateBarrelGroup" popup="true"
+        <group id="com.starzec.piotr.CreateBarrelGroup" class="com.starzec.piotr.CreateBarrelGroup" popup="true" icon="AllIcons.FileTypes.Any_type"
                text="Create Barrel" description="Creates barrel for selected language">
-            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="FileTemplateSeparatorGroup"/>
 
             <action id="com.starzec.piotr.CreateTypeScriptBarrelAction" class="com.starzec.piotr.CreateTypeScriptBarrelAction"
-                    text="TypeScript Barrel" description="Create index.ts fle">
+                    text="TypeScript Barrel" description="Create index.ts fle" icon="JavaScriptPsiIcons.Icons.FileTypes.TypeScriptFile">
             </action>
 
             <action id="com.starzec.piotr.CreateJavaScriptBarrelAction" class="com.starzec.piotr.CreateJavaScriptBarrelAction"
-                    text="JavaScript Barrel" description="Create index.js fle">
+                    text="JavaScript Barrel" description="Create index.js fle" icon="AllIcons.FileTypes.JavaScript">
             </action>
 
             <action id="com.starzec.piotr.CreateScssBarrelAction" class="com.starzec.piotr.CreateScssBarrelAction"
-                    text="SCSS Barrel" description="Create _index.scss fle">
+                    text="SCSS Barrel" description="Create _index.scss fle" icon="SassIcons.Org.Jetbrains.Plugins.Sass.Sass">
             </action>
         </group>
     </actions>

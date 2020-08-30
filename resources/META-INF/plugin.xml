@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.your.company.unique.plugin.id</id>
+    <id>com.starzec.piotr</id>
     <name>Barrels</name>
     <version>1.0</version>
     <vendor email="starzec.piotr.12@gmail.com">Starzec Piotr</vendor>

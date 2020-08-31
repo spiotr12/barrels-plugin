@@ -4,7 +4,11 @@
     <version>1.1</version>
     <vendor email="starzec.piotr.12@gmail.com">Starzec Piotr</vendor>
 
-    <description>Plugin that adds index files for JavaScript and TypeScript</description>
+    <description>
+        Helper plugin for adding index files (aka barrels) in selected directory directly from New contextmenu. Just select "Create Barrel"
+        action. Currently supports barrels for TypeScript (index.ts), JavaScript (index.js), SCSS (_index.scss). If more barrels are needed let me
+        know and I can add it.
+    </description>
 
     <!--    <change-notes><![CDATA[-->
     <!--      Add change notes here.<br>-->

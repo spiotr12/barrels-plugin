@@ -19,14 +19,23 @@ import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Base action for creating barrels
+ */
 public abstract class CreateBarrelAction extends AnAction {
     private final NotificationGroup NOTIFICATION_GROUP =
             new NotificationGroup("Barrels plugin", NotificationDisplayType.BALLOON, true);
 
+    /**
+     * Create barrel with provided language and default "index" file name
+     */
     public void createBarrel(@NotNull AnActionEvent event, Language language) {
         this.createBarrel(event, language, "index");
     }
 
+    /**
+     * Create barrel with provided language file name
+     */
     public void createBarrel(@NotNull AnActionEvent event, Language language, String fileName) {
         final Project project = event.getProject();
         assert project != null;

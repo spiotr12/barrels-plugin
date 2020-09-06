@@ -10,6 +10,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -47,10 +48,10 @@ public abstract class CreateBarrelAction extends AnAction {
             virtualFile = virtualFile.getParent();
         }
 
-        final PsiManager manager = PsiManager.getInstance(project);
+        final PsiManager psiManager = PsiManager.getInstance(project);
         PsiFileFactory factory = PsiFileFactory.getInstance(project);
 
-        final PsiDirectory psiDirectory = manager.findDirectory(virtualFile);
+        final PsiDirectory psiDirectory = psiManager.findDirectory(virtualFile);
         assert psiDirectory != null;
 
         final LanguageFileType fileType = language.getAssociatedFileType();
@@ -60,10 +61,16 @@ public abstract class CreateBarrelAction extends AnAction {
         final String fullFileName = String.format("%s.%s", fileName, extension);
         final PsiFile file = factory.createFileFromText(fullFileName, language, "");
 
-        if (psiDirectory.findFile(fullFileName) != null) {
+        FileEditorManager editorManager = FileEditorManager.getInstance(project);
+        assert editorManager != null;
+
+        PsiFile existingFile = psiDirectory.findFile(fullFileName);
+
+        if (existingFile != null) {
             final String msg = String.format("Barrel \"%s\" already exists at: \n\"%s\"", fullFileName, virtualFile.getPath());
             final Notification notification = NOTIFICATION_GROUP.createNotification(msg, NotificationType.ERROR);
             notification.notify(project);
+            editorManager.openFile(existingFile.getVirtualFile(), true);
             return;
         }
 
@@ -75,6 +82,7 @@ public abstract class CreateBarrelAction extends AnAction {
             final String msg = String.format("Barrel \"%s\" successfully created", fullFileName);
             final Notification notification = NOTIFICATION_GROUP.createNotification(msg, NotificationType.INFORMATION);
             notification.notify(project);
+            editorManager.openFile(file.getVirtualFile(), true);
         });
     }
 

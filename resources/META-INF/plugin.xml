@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.starzec.piotr</id>
     <name>Barrels</name>
-    <version>1.2</version>
+    <version>1.3</version>
     <vendor email="starzec.piotr.12@gmail.com">Starzec Piotr</vendor>
 
     <description>
@@ -10,11 +10,22 @@
         know and I can add it.
     </description>
 
-    <!--    <change-notes><![CDATA[-->
-    <!--      Add change notes here.<br>-->
-    <!--      <em>most HTML tags may be used</em>-->
-    <!--    ]]>-->
-    <!--    </change-notes>-->
+    <change-notes>
+        <![CDATA[
+          Changes:<br>
+          v 1.3<br>
+          - Open barrel after create<br>
+          - Open existing barrel<br>
+          v 1.2<br>
+          - Added Icons<br>
+          v 1.1<br>
+          - Fix information<br>
+          v 1.0<br>
+          - Add support for creating TypeScript barrel file (index.ts)<br>
+          - Add support for creating JavaScript barrel file (index.js)<br>
+          - Add support for creating SCSS barrel file (_index.scss)<br>
+        ]]>
+    </change-notes>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="173.0"/>

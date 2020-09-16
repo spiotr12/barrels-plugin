@@ -14,10 +14,7 @@ import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.PsiManager;
+import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -77,12 +74,13 @@ public abstract class CreateBarrelAction extends AnAction {
         final Application app = ApplicationManager.getApplication();
 
         app.runWriteAction(() -> {
-            psiDirectory.add(file);
+            PsiElement newElement = psiDirectory.add(file);
 
             final String msg = String.format("Barrel \"%s\" successfully created", fullFileName);
             final Notification notification = NOTIFICATION_GROUP.createNotification(msg, NotificationType.INFORMATION);
             notification.notify(project);
-            editorManager.openFile(file.getVirtualFile(), true);
+
+            editorManager.openFile(newElement.getContainingFile().getVirtualFile(), true);
         });
     }
 

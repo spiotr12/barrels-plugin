@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.starzec.piotr</id>
     <name>Barrels</name>
-    <version>1.4</version>
+    <version>1.5</version>
     <vendor email="starzec.piotr.12@gmail.com">Starzec Piotr</vendor>
 
     <description>

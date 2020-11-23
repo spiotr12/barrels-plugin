@@ -5,10 +5,12 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class CreateScssBarrelAction extends CreateBarrelAction {
+    public CreateScssBarrelAction() {
+        super(Language.findLanguageByID("SCSS"));
+    }
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
-        Language language = Language.findLanguageByID("SCSS");
-        assert language != null;
-        super.createBarrel(event, language, "_index");
+        super.createBarrel(event, "_index");
     }
 }

@@ -13,6 +13,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -21,20 +22,27 @@ import org.jetbrains.annotations.NotNull;
  * Base action for creating barrels
  */
 public abstract class CreateBarrelAction extends AnAction {
+    public Language language;
+
+    public CreateBarrelAction(Language language) {
+        assert language != null;
+        this.language = language;
+    }
+
     private final NotificationGroup NOTIFICATION_GROUP =
             new NotificationGroup("Barrels plugin", NotificationDisplayType.BALLOON, true);
 
     /**
      * Create barrel with provided language and default "index" file name
      */
-    public void createBarrel(@NotNull AnActionEvent event, Language language) {
-        this.createBarrel(event, language, "index");
+    public void createBarrel(@NotNull AnActionEvent event) {
+        createBarrel(event, "index");
     }
 
     /**
      * Create barrel with provided language file name
      */
-    public void createBarrel(@NotNull AnActionEvent event, Language language, String fileName) {
+    public void createBarrel(@NotNull AnActionEvent event, String fileName) {
         final Project project = event.getProject();
         assert project != null;
 
@@ -74,13 +82,26 @@ public abstract class CreateBarrelAction extends AnAction {
         final Application app = ApplicationManager.getApplication();
 
         app.runWriteAction(() -> {
-            PsiElement newElement = psiDirectory.add(file);
+            FilesToExportDialog dialog = new FilesToExportDialog(project, psiDirectory, language);
+            dialog.show();
 
-            final String msg = String.format("Barrel \"%s\" successfully created", fullFileName);
-            final Notification notification = NOTIFICATION_GROUP.createNotification(msg, NotificationType.INFORMATION);
-            notification.notify(project);
+            if (dialog.getExitCode() == DialogWrapper.OK_EXIT_CODE) {
+                // TODO: Use selected items to generate code
+                // dialog.getSelectedItems();
 
-            editorManager.openFile(newElement.getContainingFile().getVirtualFile(), true);
+
+                PsiElement newElement = psiDirectory.add(file);
+
+                final String msg = String.format("Barrel \"%s\" successfully created", fullFileName);
+                final Notification notification = NOTIFICATION_GROUP.createNotification(msg, NotificationType.INFORMATION);
+                notification.notify(project);
+
+                editorManager.openFile(newElement.getContainingFile().getVirtualFile(), true);
+            }
+
+            if (dialog.getExitCode() == DialogWrapper.CANCEL_EXIT_CODE) {
+                System.out.println("CANCELED");
+            }
         });
     }
 

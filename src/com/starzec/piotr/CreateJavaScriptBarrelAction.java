@@ -5,10 +5,12 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class CreateJavaScriptBarrelAction extends CreateBarrelAction {
+    public CreateJavaScriptBarrelAction() {
+        super(Language.findLanguageByID("JavaScript"));
+    }
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
-        Language language = Language.findLanguageByID("JavaScript");
-        assert language != null;
-        super.createBarrel(event, language);
+        super.createBarrel(event);
     }
 }

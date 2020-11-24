@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Plugin" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
     <module name="barrels-plugin" />
-    <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -ea" />
+    <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -ea -Didea.is.internal=true" />
     <option name="PROGRAM_PARAMETERS" value="" />
     <alternative-path path="IntelliJ IDEA IU-202.7660.26" alternative-path-enabled="true" />
     <predefined_log_file enabled="true" id="idea.log" />

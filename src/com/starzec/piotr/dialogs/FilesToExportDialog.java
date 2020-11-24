@@ -71,7 +71,7 @@ public class FilesToExportDialog extends DialogWrapper {
     @Override
     protected JComponent createCenterPanel() {
         JPanel dialogPanel = new JPanel(new BorderLayout());
-        JPanel mainPanel = new JPanel();
+        JPanel mainPanel = new JPanel(new BorderLayout());
 
         DefaultMutableTreeNode root = psiDirectoryToTreeNode(psiDirectory);
         TreeModel treeModel = new DefaultTreeModel(root);

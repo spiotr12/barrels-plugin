@@ -16,17 +16,26 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.starzec.piotr.dialogs.FilesToExportDialog;
+import com.starzec.piotr.dialogs.LanguageComparator;
 import org.jetbrains.annotations.NotNull;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Base action for creating barrels
  */
 public abstract class CreateBarrelAction extends AnAction {
-    public Language language;
 
-    public CreateBarrelAction(Language language) {
+    public Language language;
+    public LanguageComparator languageComparator;
+
+    public CreateBarrelAction(Language language, LanguageComparator languageComparator) {
         assert language != null;
         this.language = language;
+        this.languageComparator = languageComparator;
     }
 
     private final NotificationGroup NOTIFICATION_GROUP =
@@ -64,7 +73,6 @@ public abstract class CreateBarrelAction extends AnAction {
 
         final String extension = fileType.getDefaultExtension();
         final String fullFileName = String.format("%s.%s", fileName, extension);
-        final PsiFile file = factory.createFileFromText(fullFileName, language, "");
 
         FileEditorManager editorManager = FileEditorManager.getInstance(project);
         assert editorManager != null;
@@ -82,15 +90,15 @@ public abstract class CreateBarrelAction extends AnAction {
         final Application app = ApplicationManager.getApplication();
 
         app.runWriteAction(() -> {
-            FilesToExportDialog dialog = new FilesToExportDialog(project, psiDirectory, language);
+            FilesToExportDialog dialog = new FilesToExportDialog(psiDirectory, language, languageComparator);
             dialog.show();
 
             if (dialog.getExitCode() == DialogWrapper.OK_EXIT_CODE) {
                 // TODO: Use selected items to generate code
-                // dialog.getSelectedItems();
+                String content = buildBarrelFileContent(psiDirectory, dialog.getSelectedItems());
 
-
-                PsiElement newElement = psiDirectory.add(file);
+                final PsiFile file = factory.createFileFromText(fullFileName, language, content);
+                final PsiElement newElement = psiDirectory.add(file);
 
                 final String msg = String.format("Barrel \"%s\" successfully created", fullFileName);
                 final Notification notification = NOTIFICATION_GROUP.createNotification(msg, NotificationType.INFORMATION);
@@ -109,5 +117,21 @@ public abstract class CreateBarrelAction extends AnAction {
     public void update(@NotNull AnActionEvent event) {
         Project project = event.getProject();
         event.getPresentation().setEnabledAndVisible(project != null);
+    }
+
+    protected abstract String exportLineBuilder(PsiDirectory barrelRootDir, PsiFile file);
+
+    protected abstract String exportLineBuilder(PsiDirectory barrelRootDir, PsiDirectory directory);
+
+    private String buildBarrelFileContent(PsiDirectory barrelRootDir, PsiFileSystemItem[] items) {
+        return Arrays.stream(items).map(item -> {
+            if (item instanceof PsiFile) {
+                return exportLineBuilder(barrelRootDir, (PsiFile) item);
+            }
+            if (item instanceof PsiDirectory) {
+                return exportLineBuilder(barrelRootDir, (PsiDirectory) item);
+            }
+            return MessageFormat.format("Item is not a file nor a directory \"%s\"", item.getName());
+        }).collect(Collectors.joining("\n"));
     }
 }

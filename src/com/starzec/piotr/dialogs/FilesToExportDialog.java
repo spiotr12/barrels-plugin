@@ -1,4 +1,4 @@
-package com.starzec.piotr;
+package com.starzec.piotr.dialogs;
 
 import com.intellij.lang.Language;
 import com.intellij.openapi.project.Project;
@@ -22,19 +22,19 @@ import java.util.stream.Stream;
 
 public class FilesToExportDialog extends DialogWrapper {
 
-    private Project project;
     private PsiDirectory psiDirectory;
     private Language language;
+    private LanguageComparator languageComparator;
 
     private Tree tree;
 
     private PsiFileSystemItem[] selected;
 
-    public FilesToExportDialog(Project project, PsiDirectory psiDirectory, Language language) {
+    public FilesToExportDialog(PsiDirectory psiDirectory, Language language, LanguageComparator languageComparator) {
         super(true);
-        this.project = project;
         this.psiDirectory = psiDirectory;
         this.language = language;
+        this.languageComparator = languageComparator;
         init();
         setTitle("Select Files to Export");
     }
@@ -58,18 +58,10 @@ public class FilesToExportDialog extends DialogWrapper {
         };
         select.putValue(DEFAULT_ACTION, true);
 
-        Action selectAll = new DialogWrapperExitAction("Select All", OK_EXIT_CODE) {
-            @Override
-            protected void doAction(ActionEvent e) {
-                // TODO: Get all nodes
-                super.doAction(e);
-            }
-        };
-
         Action cancel = new DialogWrapperExitAction("Cancel", CANCEL_EXIT_CODE);
 
         list.add(select);
-        list.add(selectAll);
+        // list.add(selectAll);
         list.add(cancel);
 
         return list.toArray(new Action[list.size()]);
@@ -107,7 +99,7 @@ public class FilesToExportDialog extends DialogWrapper {
 
         // Filter only files that are in current language
         Stream<PsiFile> files = Arrays.stream(directory.getFiles())
-                .filter(psiFile -> psiFile.getLanguage().is(language));
+                .filter(file -> languageComparator.compare(file.getLanguage(), language));
 
         files.forEach(file -> {
             root.add(new DefaultMutableTreeNode(file) {

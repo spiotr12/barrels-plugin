@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.starzec.piotr</id>
     <name>Barrels</name>
-    <version>1.6.1</version>
+    <version>1.7</version>
     <vendor email="starzec.piotr.12@gmail.com">Starzec Piotr</vendor>
 
     <description>
@@ -13,6 +13,8 @@
     <change-notes>
         <![CDATA[
           Changes:<br>
+          v 1.7<br>
+          - Add file picker to pick files to be exported in barrel (root dir is the barrel dir)<br>
           v 1.6.1<br>
           - Fix java version<br>
           v 1.5<br>

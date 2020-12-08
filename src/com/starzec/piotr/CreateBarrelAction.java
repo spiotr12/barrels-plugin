@@ -89,12 +89,11 @@ public abstract class CreateBarrelAction extends AnAction {
 
         final Application app = ApplicationManager.getApplication();
 
-        app.runWriteAction(() -> {
-            FilesToExportDialog dialog = new FilesToExportDialog(psiDirectory, language, languageComparator);
-            dialog.show();
+        FilesToExportDialog dialog = new FilesToExportDialog(psiDirectory, language, languageComparator);
+        dialog.show();
 
-            if (dialog.getExitCode() == DialogWrapper.OK_EXIT_CODE) {
-                // TODO: Use selected items to generate code
+        if (dialog.getExitCode() == DialogWrapper.OK_EXIT_CODE) {
+            app.runWriteAction(() -> {
                 String content = buildBarrelFileContent(psiDirectory, dialog.getSelectedItems());
 
                 final PsiFile file = factory.createFileFromText(fullFileName, language, content);
@@ -105,12 +104,14 @@ public abstract class CreateBarrelAction extends AnAction {
                 notification.notify(project);
 
                 editorManager.openFile(newElement.getContainingFile().getVirtualFile(), true);
-            }
+            });
+        }
 
-            if (dialog.getExitCode() == DialogWrapper.CANCEL_EXIT_CODE) {
-                System.out.println("CANCELED");
-            }
-        });
+        if (dialog.getExitCode() == DialogWrapper.CANCEL_EXIT_CODE) {
+            final String msg = "Barrel creation canceled";
+            final Notification notification = NOTIFICATION_GROUP.createNotification(msg, NotificationType.INFORMATION);
+            notification.notify(project);
+        }
     }
 
     @Override

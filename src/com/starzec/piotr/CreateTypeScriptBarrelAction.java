@@ -13,7 +13,7 @@ public class CreateTypeScriptBarrelAction extends CreateBarrelAction {
         super(Language.findLanguageByID("TypeScript"), new LanguageComparator() {
             @Override
             public Boolean compare(Language src, Language dest) {
-                return src.is(dest);
+                return src.isKindOf(dest);
             }
         });
     }
